@@ -40,18 +40,32 @@ namespace Equipamentos.ConsoleApp
                     if (opcaoEquipamento == 1)
                     {
                         Console.Clear();
+                        bool nomeInvalido = false; string nomeVerifica;
+                        do
+                        {
+                            Console.WriteLine("Digite nome do produto: ");
+                            nomeVerifica = Console.ReadLine();
+                            if (nomeVerifica.Length < 6)
+                            {
+                                nomeInvalido = true;
+                                Console.WriteLine("Nome inválido, no minimo 6 caracteres");
+                            }
+                            else
+                            {
+                                nomeInvalido = false;
+                            }
+                        } while (nomeInvalido);
+
+                        nome[contadorId] = nomeVerifica;
+
                         Console.WriteLine("Digite número série: ");
                         serie[contadorId] = Convert.ToInt32(Console.ReadLine());
-
-                        Console.WriteLine("Digite nome do produto: ");
-                        nome[contadorId] = Console.ReadLine();
 
                         Console.WriteLine("Digite fabricante do produto: ");
                         fabricante[contadorId] = Console.ReadLine();
 
                         Console.WriteLine("Digite preco: ");
                         preco[contadorId] = Convert.ToDouble(Console.ReadLine());
-
 
                         Console.WriteLine("Digite data: nesse formato(YYYY,MM,DD)");
                         data[contadorId] = Convert.ToDateTime(Console.ReadLine());
@@ -63,7 +77,11 @@ namespace Equipamentos.ConsoleApp
                     if (opcaoEquipamento == 2)
                     {
                         Console.Clear();
-
+                        for (int i = 0; i < contadorId; i++)
+                        {
+                            Console.WriteLine($"Série:{serie[i]} nome: {nome[i]} fabricante: {fabricante[i]} preco: {preco[i]} data: {data[i]}");
+                        }
+                        Console.WriteLine();
                         Console.WriteLine("Digite a série do produto para edição: ");
                         int serieBusca = Convert.ToInt32(Console.ReadLine());
 
@@ -94,6 +112,12 @@ namespace Equipamentos.ConsoleApp
                     {
                         Console.Clear();
 
+
+                        for (int i = 0; i < contadorId; i++)
+                        {
+                            Console.WriteLine($"Série:{serie[i]} nome: {nome[i]} fabricante: {fabricante[i]} preco: {preco[i]} data: {data[i]}");
+                        }
+                        Console.WriteLine();
                         Console.WriteLine("Digite a série do produto para edição: ");
                         int serieBusca = Convert.ToInt32(Console.ReadLine());
 
@@ -103,13 +127,10 @@ namespace Equipamentos.ConsoleApp
                             {
 
                                 serie[i] = 0;
-                                nome[i] = "";
-                                fabricante[i] = "";
-
+                                nome[i] = null;
+                                fabricante[i] = null;
                                 preco[i] = 0;
-
-
-                                data[i] = Convert.ToDateTime("0000,00,00");
+                                data[i] = DateTime.MinValue;
                             }
                         }
                     }
@@ -118,16 +139,23 @@ namespace Equipamentos.ConsoleApp
                     {
                         for (int i = 0; i < contadorId; i++)
                         {
-                            Console.WriteLine($"Série:{serie[i]} nome: {nome[i]} fabricante: {fabricante[i]} preco: {preco[i]} data: {data[i]}");
+                            if (nome[i] != null)
+                            {
+                                Console.WriteLine($"Série:{serie[i]} nome: {nome[i]} fabricante: {fabricante[i]} preco: {preco[i]} data: {data[i]}");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Nenhum indice cadastrado");
+                            }
                         }
                         Console.ReadLine();
+                        Console.Clear();
                     }
                     //voltar
                     else if (opcaoEquipamento == 5)
                     {
                         goto Inicio;
                     }
-
                 }
             }
             //chamados
@@ -169,7 +197,11 @@ namespace Equipamentos.ConsoleApp
                     if (opcaoChamado == 2)
                     {
                         Console.Clear();
-
+                        for (int i = 0; i < contadorId; i++)
+                        {
+                            string diasDif = (DateTime.Now - data[i]).ToString("dd");
+                            Console.WriteLine($"Título:{nome[i]} descrição: {descricao[i]} equipamento: {equipamentos[i]} dias em aberto: {diasDif}");
+                        }
                         Console.WriteLine("Digite a titulo para edição: ");
                         string titulo = Console.ReadLine();
 
@@ -193,11 +225,16 @@ namespace Equipamentos.ConsoleApp
 
                             }
                         }
-                        //Console.WriteLine("Valor não encontrado");
                     }
                     //excluir
                     if (opcaoChamado == 3)
                     {
+                        for (int i = 0; i < contadorId; i++)
+                        {
+                            string diasDif = (DateTime.Now - data[i]).ToString("dd");
+                            Console.WriteLine($"Título:{nome[i]} descrição: {descricao[i]} equipamento: {equipamentos[i]} dias em aberto: {diasDif}");
+                        }
+
                         Console.Clear();
                         Console.WriteLine("Digite a titulo para EXCLUIR: ");
                         string titulo = Console.ReadLine();
@@ -210,10 +247,9 @@ namespace Equipamentos.ConsoleApp
                                 nome[i] = "";
                                 descricao[i] = "";
                                 equipamentos[i] = "";
-                                data[i] = Convert.ToDateTime("0000,00,00");
+                                data[i] = DateTime.MinValue;
                             }
                         }
-                        //Console.WriteLine("Valor não encontrado");
                     }
                     //listar
                     if (opcaoChamado == 4)
@@ -221,10 +257,18 @@ namespace Equipamentos.ConsoleApp
 
                         for (int i = 0; i < contadorId; i++)
                         {
-                            string diasDif = (DateTime.Now - data[i]).ToString("dd");
-                            Console.WriteLine($"Título:{nome[i]} descrição: {descricao[i]} equipamento: {equipamentos[i]} dias em aberto: {diasDif}");
+                            if (nome[i] != null)
+                            {
+                                string diasDif = (DateTime.Now - data[i]).ToString("dd");
+                                Console.WriteLine($"Título:{nome[i]} descrição: {descricao[i]} equipamento: {equipamentos[i]} dias em aberto: {diasDif}");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Nenhum indice cadastrado");
+                            }
                         }
                         Console.ReadLine();
+                        Console.Clear();
                     }
                     //voltar
                     else if (opcaoChamado == 5)
